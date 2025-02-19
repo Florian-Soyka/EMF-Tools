@@ -61,7 +61,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
             <line x1="200" y1="50" x2="200" y2="250" stroke="black" stroke-width="1"/>
             
             <!-- Leiter -->
-            <line x1="200" y1="50" x2="200" y2="250" stroke="blue" stroke-width="4"/>
+            <!-- <line x1="200" y1="50" x2="200" y2="250" stroke="blue" stroke-width="4"/> -->
             
             <!-- Magnetfeldlinien (konzentrische Kreise) -->
             <circle cx="200" cy="150" r="30" stroke="red" stroke-width="1" fill="none"/>
@@ -79,7 +79,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
             
             <!-- Beschriftungen -->
             <text x="220" y="140" font-size="12">r</text>
-            <text x="215" y="170" font-size="12">B</text>
+            <text x="260" y="170" font-size="12">B</text>
             <text x="180" y="150" text-anchor="end" font-size="12">I</text>
             
             <!-- Abstandsmarkierung -->
@@ -155,10 +155,12 @@ import { provideAnimations } from '@angular/platform-browser/animations';
             <path d="M 275 215 q 5 5 0 10" stroke="blue" stroke-width="2" fill="none"/>
             
             <!-- Beschriftungen -->
-            <text x="190" y="140" text-anchor="end" font-size="12">r</text>
+            <text x="135" y="185" text-anchor="end" font-size="12">r</text>
+            <text x="285" y="185" text-anchor="end" font-size="12">r</text>
+            <text x="210" y="165" text-anchor="end" font-size="12">r</text>
             <text x="125" y="60" text-anchor="middle" font-size="12">N Windungen</text>
-            <text x="275" y="60" text-anchor="middle" font-size="12">N Windungen</text>
-            <text x="200" y="30" text-anchor="middle" font-size="12">B</text>
+            <text x="275" y="60" text-anchor="middle" font-size="12">N Windungen</text>            
+            <text x="190" y="140" text-anchor="end" font-size="12">B</text>
             
             <!-- Radius-Markierung -->
             <line x1="125" y1="150" x2="275" y2="150" stroke="red" stroke-width="1" stroke-dasharray="4"/>
