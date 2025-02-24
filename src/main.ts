@@ -40,17 +40,17 @@ import { provideAnimations } from '@angular/platform-browser/animations';
             <line x1="200" y1="150" x2="300" y2="50" stroke="black" stroke-width="1" stroke-dasharray="4"/> <!-- z-Achse -->
             
             <!-- Achsenbeschriftungen -->
-            <text x="340" y="140" font-size="12">x (E)</text>
-            <text x="210" y="60" font-size="12">y (H)</text>
+            <text x="340" y="140" font-size="12">y (H)</text>
+            <text x="210" y="60" font-size="12">x (E)</text>
             <text x="290" y="60" font-size="12">z</text>
 
-            <!-- E-Feld Vektor (rot) -->
-            <line x1="200" y1="150" x2="300" y2="150" stroke="red" stroke-width="2" marker-end="url(#arrowheadRed)"/>
-            <text x="250" y="140" fill="red" font-size="12">E</text>
-
             <!-- H-Feld Vektor (blau) -->
-            <line x1="200" y1="150" x2="200" y2="80" stroke="blue" stroke-width="2" marker-end="url(#arrowheadBlue)"/>
-            <text x="190" y="110" fill="blue" font-size="12">H</text>
+            <line x1="200" y1="150" x2="300" y2="150" stroke="blue" stroke-width="2" marker-end="url(#arrowheadBlue)"/>
+            <text x="250" y="140" fill="blue" font-size="12">H</text>
+
+            <!-- E-Feld Vektor (rot) -->
+            <line x1="200" y1="150" x2="200" y2="80" stroke="red" stroke-width="2" marker-end="url(#arrowheadRed)"/>
+            <text x="190" y="110" fill="red" font-size="12">E</text>
 
             <!-- Ausbreitungsrichtung (grün) -->
             <line x1="200" y1="150" x2="270" y2="80" stroke="green" stroke-width="2" marker-end="url(#arrowheadGreen)"/>
