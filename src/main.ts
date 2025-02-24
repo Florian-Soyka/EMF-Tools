@@ -10,6 +10,76 @@ import { provideAnimations } from '@angular/platform-browser/animations';
   template: `
     <h1>EMF Tools</h1>
     <div style="margin: 20px 0">
+      <h2>Umrechnung zwischen elektrischem (E) und magnetischem Feld (H) im Fernfeld:</h2>
+      <div style="display: flex; gap: 20px; margin-bottom: 20px">
+        <div style="flex: 1">
+          <div style="margin: 10px 0">
+            <label>
+              E (V/m) = 
+              <input type="number" [(ngModel)]="eField" (ngModelChange)="calculateHFromE()" style="width: 100px">
+            </label>
+          </div>
+          <div style="margin: 10px 0">
+            <label>
+              H (A/m) = 
+              <input type="number" [(ngModel)]="hFieldWave" (ngModelChange)="calculateEFromH()" style="width: 100px">
+            </label>
+          </div>
+          <p style="color: #666; font-size: 0.9em">
+            Formeln: <br>
+            E = Z₀ × H <br>
+            H = E / Z₀ <br>
+            Z₀ = √(μ₀/ε₀) ≈ 377 Ω (Wellenwiderstand des Vakuums)
+          </p>
+        </div>
+        <div style="flex: 1">
+          <svg viewBox="0 0 400 300" style="width: 100%; max-width: 400px;">
+            <!-- Koordinatensystem -->
+            <line x1="50" y1="150" x2="350" y2="150" stroke="black" stroke-width="1"/> <!-- x-Achse -->
+            <line x1="200" y1="50" x2="200" y2="250" stroke="black" stroke-width="1"/> <!-- y-Achse -->
+            <line x1="200" y1="150" x2="300" y2="50" stroke="black" stroke-width="1" stroke-dasharray="4"/> <!-- z-Achse -->
+            
+            <!-- Achsenbeschriftungen -->
+            <text x="340" y="140" font-size="12">x (E)</text>
+            <text x="210" y="60" font-size="12">y (H)</text>
+            <text x="290" y="60" font-size="12">z</text>
+
+            <!-- E-Feld Vektor (rot) -->
+            <line x1="200" y1="150" x2="300" y2="150" stroke="red" stroke-width="2" marker-end="url(#arrowheadRed)"/>
+            <text x="250" y="140" fill="red" font-size="12">E</text>
+
+            <!-- H-Feld Vektor (blau) -->
+            <line x1="200" y1="150" x2="200" y2="80" stroke="blue" stroke-width="2" marker-end="url(#arrowheadBlue)"/>
+            <text x="190" y="110" fill="blue" font-size="12">H</text>
+
+            <!-- Ausbreitungsrichtung (grün) -->
+            <line x1="200" y1="150" x2="270" y2="80" stroke="green" stroke-width="2" marker-end="url(#arrowheadGreen)"/>
+            <text x="250" y="100" fill="green" font-size="12">k</text>
+
+            <!-- Pfeilspitzen-Definitionen -->
+            <defs>
+              <marker id="arrowheadRed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="red"/>
+              </marker>
+              <marker id="arrowheadBlue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="blue"/>
+              </marker>
+              <marker id="arrowheadGreen" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="green"/>
+              </marker>
+            </defs>
+          </svg>
+          <p style="color: #666; font-size: 0.9em">
+            Legende:<br>
+            E : Elektrisches Feld (rot)<br>
+            H : Magnetisches Feld (blau)<br>
+            k : Ausbreitungsrichtung (grün)
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin: 20px 0">
       <h2>Umrechnung zwischen magnetischer Flussdichte B & magnetischer Feldstärke H:</h2>
       <div style="margin: 10px 0">
         <label>
@@ -201,8 +271,13 @@ export class App {
   helmholtzCurrent: number = 0;
   radius: number = 0;
   helmholtzFieldMilliTesla: number = 0;
+
+  // E-H-Feld Variablen
+  eField: number = 0;
+  hFieldWave: number = 0;
   
   μ0: number = 4 * Math.PI * 1e-7; // magnetische Feldkonstante
+  Z0: number = 376.730313668; // Wellenwiderstand des Vakuums
 
   calculateH() {
     if (this.bFieldMilliTesla != null) {
@@ -217,6 +292,18 @@ export class App {
       // Berechnung in Tesla und Umrechnung in mT
       const bFieldTesla = this.hField * this.μ0;
       this.bFieldMilliTesla = bFieldTesla * 1000;
+    }
+  }
+
+  calculateHFromE() {
+    if (this.eField != null) {
+      this.hFieldWave = this.eField / this.Z0;
+    }
+  }
+
+  calculateEFromH() {
+    if (this.hFieldWave != null) {
+      this.eField = this.hFieldWave * this.Z0;
     }
   }
 
