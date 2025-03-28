@@ -106,18 +106,41 @@ import { provideAnimations } from '@angular/platform-browser/animations';
         <div style="flex: 1">
           <div style="margin: 10px 0">
             <label>
-              Strom I (A) = 
-              <input type="number" [(ngModel)]="current" (ngModelChange)="calculateSingleWireField()" style="width: 100px">
+              <input type="radio" [(ngModel)]="calculateParameter" value="current" name="parameter">
+              Strom I (A) berechnen
             </label>
           </div>
           <div style="margin: 10px 0">
             <label>
-              Abstand r (m) = 
-              <input type="number" [(ngModel)]="distance" (ngModelChange)="calculateSingleWireField()" style="width: 100px">
+              <input type="radio" [(ngModel)]="calculateParameter" value="distance" name="parameter">
+              Abstand r (m) berechnen
             </label>
           </div>
           <div style="margin: 10px 0">
-            Magnetische Flussdichte B im Abstand r = {{ singleWireFieldMilliTesla.toFixed(3) }} mT
+            <label>
+              <input type="radio" [(ngModel)]="calculateParameter" value="field" name="parameter">
+              Magnetische Flussdichte B (mT) berechnen
+            </label>
+          </div>
+          <div style="margin: 20px 0">
+            <div style="margin: 10px 0">
+              <label>
+                Strom I (A) = 
+                <input type="number" [(ngModel)]="current" (ngModelChange)="calculateSingleWireField()" [disabled]="calculateParameter === 'current'" style="width: 100px">
+              </label>
+            </div>
+            <div style="margin: 10px 0">
+              <label>
+                Abstand r (m) = 
+                <input type="number" [(ngModel)]="distance" (ngModelChange)="calculateSingleWireField()" [disabled]="calculateParameter === 'distance'" style="width: 100px">
+              </label>
+            </div>
+            <div style="margin: 10px 0">
+              <label>
+                Magnetische Flussdichte B (mT) = 
+                <input type="number" [(ngModel)]="singleWireFieldMilliTesla" (ngModelChange)="calculateSingleWireField()" [disabled]="calculateParameter === 'field'" style="width: 100px">
+              </label>
+            </div>
           </div>
           <p style="color: #666; font-size: 0.9em">
             Formel: B = (μ₀ × I) / (2π × r) <br>
@@ -129,9 +152,6 @@ import { provideAnimations } from '@angular/platform-browser/animations';
             <!-- Koordinatensystem -->
             <line x1="50" y1="150" x2="350" y2="150" stroke="black" stroke-width="1"/>
             <line x1="200" y1="50" x2="200" y2="250" stroke="black" stroke-width="1"/>
-            
-            <!-- Leiter -->
-            <!-- <line x1="200" y1="50" x2="200" y2="250" stroke="blue" stroke-width="4"/> -->
             
             <!-- Magnetfeldlinien (konzentrische Kreise) -->
             <circle cx="200" cy="150" r="30" stroke="red" stroke-width="1" fill="none"/>
@@ -259,36 +279,37 @@ import { provideAnimations } from '@angular/platform-browser/animations';
     </div>
 
     <div style="margin: 20px 0">
-    <h2>Umrechnung zwischen Frequenz und Wellenlänge:</h2>
-    <div style="display: flex; gap: 20px; margin-bottom: 20px">
-      <div style="flex: 1">
-        <div style="margin: 10px 0">
-          <label style="display: flex; gap: 10px; align-items: center">
-            Frequenz = 
-            <input type="number" [(ngModel)]="frequency" (ngModelChange)="calculateWavelength()" style="width: 100px">
-            <select [(ngModel)]="frequencyUnit" (ngModelChange)="calculateWavelength()" style="width: 80px">
-              <option value="1">Hz</option>
-              <option value="1000">kHz</option>
-              <option value="1000000">MHz</option>
-              <option value="1000000000">GHz</option>
-            </select>
-          </label>
+      <h2>Umrechnung zwischen Frequenz und Wellenlänge:</h2>
+      <div style="display: flex; gap: 20px; margin-bottom: 20px">
+        <div style="flex: 1">
+          <div style="margin: 10px 0">
+            <label style="display: flex; gap: 10px; align-items: center">
+              Frequenz = 
+              <input type="number" [(ngModel)]="frequency" (ngModelChange)="calculateWavelength()" style="width: 100px">
+              <select [(ngModel)]="frequencyUnit" (ngModelChange)="calculateWavelength()" style="width: 80px">
+                <option value="1">Hz</option>
+                <option value="1000">kHz</option>
+                <option value="1000000">MHz</option>
+                <option value="1000000000">GHz</option>
+              </select>
+            </label>
+          </div>
+          <div style="margin: 10px 0">
+            <label style="display: flex; gap: 10px; align-items: center">
+              Wellenlänge = 
+              <input type="number" [(ngModel)]="wavelength" (ngModelChange)="calculateFrequency()" style="width: 100px">
+              <select [(ngModel)]="wavelengthUnit" (ngModelChange)="calculateFrequency()" style="width: 80px">
+                <option value="1">m</option>
+                <option value="0.01">cm</option>
+                <option value="0.001">mm</option>
+              </select>
+            </label>
+          </div>
+          <p style="color: #666; font-size: 0.9em">
+            Formel: λ = c / f <br>
+            c = 299792458 m/s (Lichtgeschwindigkeit)
+          </p>
         </div>
-        <div style="margin: 10px 0">
-          <label style="display: flex; gap: 10px; align-items: center">
-            Wellenlänge = 
-            <input type="number" [(ngModel)]="wavelength" (ngModelChange)="calculateFrequency()" style="width: 100px">
-            <select [(ngModel)]="wavelengthUnit" (ngModelChange)="calculateFrequency()" style="width: 80px">
-              <option value="1">m</option>
-              <option value="0.01">cm</option>
-              <option value="0.001">mm</option>
-            </select>
-          </label>
-        </div>
-        <p style="color: #666; font-size: 0.9em">
-          Formel: λ = c / f <br>
-          c = 299792458 m/s (Lichtgeschwindigkeit)
-        </p>
       </div>
     </div>
   `,
@@ -299,7 +320,8 @@ export class App {
   current: number = 0;
   distance: number = 0;
   singleWireFieldMilliTesla: number = 0;
-  
+  calculateParameter: string = 'field';
+
   // Helmholtz-Spule Variablen
   turns: number = 0;
   helmholtzCurrent: number = 0;
@@ -309,19 +331,19 @@ export class App {
   // E-H-Feld Variablen
   eField: number = 0;
   hFieldWave: number = 0;
-  
-  μ0: number = 4 * Math.PI * 1e-7; // magnetische Feldkonstante
-  Z0: number = 376.730313668; // Wellenwiderstand des Vakuums
 
+  // Frequenz-Wellenlänge Variablen
   frequency: number = 0;
   frequencyUnit: string = "1";
   wavelength: number = 0;
   wavelengthUnit: string = "1";
   c: number = 299792458;
 
+  μ0: number = 4 * Math.PI * 1e-7; // magnetische Feldkonstante
+  Z0: number = 376.730313668; // Wellenwiderstand des Vakuums
+
   calculateH() {
     if (this.bFieldMilliTesla != null) {
-      // Umrechnung von mT in T und dann Berechnung von H
       const bFieldTesla = this.bFieldMilliTesla * 0.001;
       this.hField = bFieldTesla / this.μ0;
     }
@@ -329,7 +351,6 @@ export class App {
 
   calculateB() {
     if (this.hField != null) {
-      // Berechnung in Tesla und Umrechnung in mT
       const bFieldTesla = this.hField * this.μ0;
       this.bFieldMilliTesla = bFieldTesla * 1000;
     }
@@ -348,20 +369,32 @@ export class App {
   }
 
   calculateSingleWireField() {
-    if (this.current != null && this.distance != null && this.distance !== 0) {
-      // B = (μ0 × I) / (2π × r)
-      const bFieldTesla = (this.μ0 * this.current) / (2 * Math.PI * this.distance);
-      this.singleWireFieldMilliTesla = bFieldTesla * 1000; // Umrechnung in mT
-    } else {
-      this.singleWireFieldMilliTesla = 0;
+    switch (this.calculateParameter) {
+      case 'current':
+        if (this.distance != null && this.distance !== 0 && this.singleWireFieldMilliTesla != null) {
+          const bFieldTesla = this.singleWireFieldMilliTesla * 0.001;
+          this.current = (bFieldTesla * 2 * Math.PI * this.distance) / this.μ0;
+        }
+        break;
+      case 'distance':
+        if (this.current != null && this.current !== 0 && this.singleWireFieldMilliTesla != null) {
+          const bFieldTesla = this.singleWireFieldMilliTesla * 0.001;
+          this.distance = (this.μ0 * this.current) / (2 * Math.PI * bFieldTesla);
+        }
+        break;
+      case 'field':
+        if (this.current != null && this.distance != null && this.distance !== 0) {
+          const bFieldTesla = (this.μ0 * this.current) / (2 * Math.PI * this.distance);
+          this.singleWireFieldMilliTesla = bFieldTesla * 1000;
+        }
+        break;
     }
   }
 
   calculateHelmholtzField() {
     if (this.turns != null && this.helmholtzCurrent != null && this.radius != null && this.radius !== 0) {
-      // B = (8 × μ0 × N × I) / (5√5 × r)
       const bFieldTesla = (8 * this.μ0 * this.turns * this.helmholtzCurrent) / (5 * Math.sqrt(5) * this.radius);
-      this.helmholtzFieldMilliTesla = bFieldTesla * 1000; // Umrechnung in mT
+      this.helmholtzFieldMilliTesla = bFieldTesla * 1000;
     } else {
       this.helmholtzFieldMilliTesla = 0;
     }
@@ -381,11 +414,9 @@ export class App {
       const frequencyInHz = this.c / wavelengthInMeters;
       this.frequency = frequencyInHz / parseFloat(this.frequencyUnit);
     }
-  }  
+  }
 }
 
 bootstrapApplication(App, {
-  providers: [
-    provideAnimations()
-  ]
+  providers: [provideAnimations()]
 }).catch(err => console.error(err));
