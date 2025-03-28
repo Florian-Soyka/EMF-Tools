@@ -257,6 +257,40 @@ import { provideAnimations } from '@angular/platform-browser/animations';
         B : Magnetische Flussdichte im Zentrum
       </p>
     </div>
+
+    <div style="margin: 20px 0">
+    <h2>Umrechnung zwischen Frequenz und Wellenlänge:</h2>
+    <div style="display: flex; gap: 20px; margin-bottom: 20px">
+      <div style="flex: 1">
+        <div style="margin: 10px 0">
+          <label style="display: flex; gap: 10px; align-items: center">
+            Frequenz = 
+            <input type="number" [(ngModel)]="frequency" (ngModelChange)="calculateWavelength()" style="width: 100px">
+            <select [(ngModel)]="frequencyUnit" (ngModelChange)="calculateWavelength()" style="width: 80px">
+              <option value="1">Hz</option>
+              <option value="1000">kHz</option>
+              <option value="1000000">MHz</option>
+              <option value="1000000000">GHz</option>
+            </select>
+          </label>
+        </div>
+        <div style="margin: 10px 0">
+          <label style="display: flex; gap: 10px; align-items: center">
+            Wellenlänge = 
+            <input type="number" [(ngModel)]="wavelength" (ngModelChange)="calculateFrequency()" style="width: 100px">
+            <select [(ngModel)]="wavelengthUnit" (ngModelChange)="calculateFrequency()" style="width: 80px">
+              <option value="1">m</option>
+              <option value="0.01">cm</option>
+              <option value="0.001">mm</option>
+            </select>
+          </label>
+        </div>
+        <p style="color: #666; font-size: 0.9em">
+          Formel: λ = c / f <br>
+          c = 299792458 m/s (Lichtgeschwindigkeit)
+        </p>
+      </div>
+    </div>
   `,
 })
 export class App {
@@ -278,6 +312,12 @@ export class App {
   
   μ0: number = 4 * Math.PI * 1e-7; // magnetische Feldkonstante
   Z0: number = 376.730313668; // Wellenwiderstand des Vakuums
+
+  frequency: number = 0;
+  frequencyUnit: string = "1";
+  wavelength: number = 0;
+  wavelengthUnit: string = "1";
+  c: number = 299792458;
 
   calculateH() {
     if (this.bFieldMilliTesla != null) {
@@ -326,6 +366,22 @@ export class App {
       this.helmholtzFieldMilliTesla = 0;
     }
   }
+
+  calculateWavelength() {
+    if (this.frequency != null && this.frequency !== 0) {
+      const frequencyInHz = this.frequency * parseFloat(this.frequencyUnit);
+      const wavelengthInMeters = this.c / frequencyInHz;
+      this.wavelength = wavelengthInMeters / parseFloat(this.wavelengthUnit);
+    }
+  }
+
+  calculateFrequency() {
+    if (this.wavelength != null && this.wavelength !== 0) {
+      const wavelengthInMeters = this.wavelength * parseFloat(this.wavelengthUnit);
+      const frequencyInHz = this.c / wavelengthInMeters;
+      this.frequency = frequencyInHz / parseFloat(this.frequencyUnit);
+    }
+  }  
 }
 
 bootstrapApplication(App, {
